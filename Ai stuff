@@ -1,0 +1,36 @@
+import openai
+
+# Initialize the OpenAI API with your API key
+openai.api_key = "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"
+
+def summarize_text(paragraph):
+    try:
+        # Use the gpt-3.5-turbo model for summarization
+        response = openai.Completion.create(
+            model="gpt-3.5-turbo",  # Use gpt-3.5-turbo or gpt-4 depending on your access
+            prompt=f"Summarize the following text: {paragraph}",
+            max_tokens=100
+        )
+
+        # Extract the summary from the response
+        summary = response['choices'][0]['text'].strip()
+        return summary
+
+    except openai.OpenAIError as e:  # Catch any OpenAI API errors
+        return f"OpenAI API error: {e}"
+
+    except Exception as e:  # Catch other unexpected errors
+        return f"An unexpected error occurred: {e}"
+
+# Run the summarizer in terminal
+if __name__ == "__main__":
+    print("Enter the paragraph you want to summarize (or type 'exit' to quit):")
+    while True:
+        user_input = input("> ")
+        if user_input.lower() == "exit":
+            print("Goodbye!")
+            break
+        summary = summarize_text(user_input)
+        print("\nSummary:")
+        print(summary)
+        print("\n")
